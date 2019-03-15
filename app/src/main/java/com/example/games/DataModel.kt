@@ -188,7 +188,7 @@ class JugadorAutomatic(tablero: Tablero) {
                     * Agrega el llamado recursivo de minimax y obtén la calificación Actual
 
                     * */
-                    var res=minimax(profundidad-1,jugador)
+                    var res=minimax(profundidad-1,contrario)
                     calificacionActual=res[0]
 
 
@@ -206,7 +206,7 @@ class JugadorAutomatic(tablero: Tablero) {
                     * Agrega el llamado recursivo de minimax y obtén la calificación Actual
 
                     * */
-                    var res=minimax(profundidad-1,contrario)
+                    var res=minimax(profundidad-1,miFicha)
                     calificacionActual=res[0]
 
 
