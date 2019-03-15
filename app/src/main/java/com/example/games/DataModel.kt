@@ -1,9 +1,9 @@
 package com.example.games
 
-inline fun<reified Celda > matrix2d(ancho: Int,
-                                    alto: Int,
-                                    noinline  param: (Int) -> Celda ): Array<Array<Celda>>
-= Array(ancho){ Array<Celda>(alto, param ) }
+inline  fun<reified Celda > matrix2d(ancho: Int,
+                                     alto: Int,
+                                     noinline  param: (Int) -> Celda ): Array<Array<Celda>>
+        = Array(ancho){ Array<Celda>(alto, param ) }
 
 
 enum class Ficha{
@@ -22,7 +22,7 @@ class Celda(val renglon: Int, val columna: Int, var  estadoCelda: Ficha){
     }
 
     override fun toString(): String {
-         var s = when (this.estadoCelda) {
+        var s = when (this.estadoCelda) {
             Ficha.VACIO -> " V "
             Ficha.BOLA -> " O "
             Ficha.CRUZ -> " X "
@@ -82,7 +82,14 @@ class Tablero{
    * */
     fun gano(player: Ficha): Boolean {
         var win  = false
-
+        if(celdas[0][0]?.estadoCelda == player && celdas[0][1]?.estadoCelda == player && celdas[0][2]?.estadoCelda == player) win = true
+        if(celdas[1][0]?.estadoCelda == player && celdas[1][1]?.estadoCelda == player && celdas[1][2]?.estadoCelda == player) win = true
+        if(celdas[2][0]?.estadoCelda == player && celdas[2][1]?.estadoCelda == player && celdas[2][2]?.estadoCelda == player) win = true
+        if(celdas[0][0]?.estadoCelda == player && celdas[1][0]?.estadoCelda == player && celdas[2][0]?.estadoCelda == player) win = true
+        if(celdas[1][0]?.estadoCelda == player && celdas[1][1]?.estadoCelda == player && celdas[2][1]?.estadoCelda == player) win = true
+        if(celdas[2][0]?.estadoCelda == player && celdas[1][2]?.estadoCelda == player && celdas[2][2]?.estadoCelda == player) win = true
+        if(celdas[0][0]?.estadoCelda == player && celdas[1][1]?.estadoCelda == player && celdas[2][2]?.estadoCelda == player) win = true
+        if(celdas[0][2]?.estadoCelda == player && celdas[1][1]?.estadoCelda == player && celdas[2][0]?.estadoCelda == player) win = true
 
 
         return win
@@ -96,14 +103,31 @@ class Tablero{
 * Para p1, asignas Ficha.CRUZ
 * Para p2, asignas Ficha.BOLA
 *
-* Completa: setTablero y setFecha, en setFicha utiliza un when
+* Completa: setTablero y setFicha, en setFicha utiliza un when
 * */
     fun setTablero( p1: ArrayList<Int>,  p2: ArrayList<Int>){
+        for(i in p1){
+            setFicha(i,Ficha.CRUZ)
+        }
+        for(i in p2){
+            setFicha(i,Ficha.BOLA)
+        }
 
     }
 
     fun setFicha(posicion: Int,ficha: Ficha ){
-
+        when(posicion){
+            1 -> celdas[0][0]!!.estadoCelda=ficha
+            2 -> celdas[0][1]!!.estadoCelda=ficha
+            3 -> celdas[0][2]!!.estadoCelda=ficha
+            4 -> celdas[1][0]!!.estadoCelda=ficha
+            5 -> celdas[1][1]!!.estadoCelda=ficha
+            6 -> celdas[1][2]!!.estadoCelda=ficha
+            7 -> celdas[2][0]!!.estadoCelda=ficha
+            8 -> celdas[2][1]!!.estadoCelda=ficha
+            9 -> celdas[2][2]!!.estadoCelda=ficha
+            else -> print("pon algo valido prro")
+        }
     }
 
 }
@@ -164,7 +188,10 @@ class JugadorAutomatic(tablero: Tablero) {
                     * Agrega el llamado recursivo de minimax y obtén la calificación Actual
 
                     * */
-                    calificacionActual = 0
+                    var res=minimax(profundidad-1,jugador)
+                    calificacionActual=res[0]
+
+
                     if(calificacionActual > mejorCalificacion) {
                         mejorCalificacion = calificacionActual
                         mejorRenglon = it[0]
@@ -179,7 +206,10 @@ class JugadorAutomatic(tablero: Tablero) {
                     * Agrega el llamado recursivo de minimax y obtén la calificación Actual
 
                     * */
-                    calificacionActual = 0
+                    var res=minimax(profundidad-1,contrario)
+                    calificacionActual=res[0]
+
+
                     if(calificacionActual < mejorCalificacion) {
                         mejorCalificacion = calificacionActual
                         mejorRenglon = it[0]

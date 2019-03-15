@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlin.collections.ArrayList
 
 
@@ -18,6 +19,8 @@ class GatoActivity : AppCompatActivity() {
 * Crea un Tablero y un JugadorAutomatic
 * */
 
+    val tablero = Tablero()
+    val jugadorautomatic = JugadorAutomatic(tablero)
 
     var player = 1;
     var p1 = ArrayList<Int>()
@@ -31,6 +34,8 @@ class GatoActivity : AppCompatActivity() {
         *
         * asigna a tu JugadorAutomatic la Ficha con la que juega.
         * * */
+
+        jugadorautomatic.asignaFicha(Ficha.BOLA)
     }
 
     fun gameOn(buttonCode:Int, selectedButton:Button){
@@ -68,10 +73,6 @@ class GatoActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
     fun select(view: View) {
         val selectedButton = view as Button
         var buttonCode = 0
@@ -87,7 +88,8 @@ class GatoActivity : AppCompatActivity() {
             R.id.button9-> buttonCode =9
         }
 
-        gameOn(buttonCode,selectedButton)
+
+
 
         /*
    Completa el código:
@@ -95,16 +97,21 @@ class GatoActivity : AppCompatActivity() {
    Llama a la función de "move" utilzando un Handler().postDelayed de 1 segundo
 
     * */
+        Handler().postDelayed({
+            move()
+        }, 1000)
 
-
-
-       if (andTheWinnerIs(p1) ){
-           Toast.makeText(this,
-               "AND the winner is PLAYER 1", Toast.LENGTH_LONG).show()
-       }else if(andTheWinnerIs(p2)){
-           Toast.makeText(this,
-               "AND the winner is PLAYER 2", Toast.LENGTH_LONG).show()
-       }
+        gameOn(buttonCode,selectedButton)
+        if (andTheWinnerIs(p1) ){
+            Toast.makeText(this,
+                "AND the winner is PLAYER 1", Toast.LENGTH_LONG).show()
+        }else if(andTheWinnerIs(p2)){
+            Toast.makeText(this,
+                "AND the winner is PLAYER 2", Toast.LENGTH_LONG).show()
+        }else if(tablero.empate()){
+            Toast.makeText(this,
+                "TIE!", Toast.LENGTH_LONG).show()
+        }
 
     }
 
@@ -119,23 +126,78 @@ class GatoActivity : AppCompatActivity() {
         2. el Button correspondiente con la interfaz
 
      * */
-    fun nextFicha(renglon : Int, columna : Int) {
-        var pair = "NOT implemented"
+    fun nextFicha(renglon : Int, columna : Int) : Pair<Int, Button> {
+        var num = 0
+        var button : Button = findViewById(R.id.button2)
 
+        if(renglon == 0) {
+            when (columna) {
+                0 -> {
+                    num = 1
+                    button = findViewById(R.id.button)
+                }
+                1 -> {
+                    num = 2
+                    button = findViewById(R.id.button2)
+                }
+                2 -> {
+                    num = 3
+                    button = findViewById(R.id.button3)
+                }
+            }
+        }
+        if(renglon == 1) {
+            when (columna) {
+                0 -> {
+                    num = 4
+                    button = findViewById(R.id.button4)
+                }
+                1 -> {
+                    num = 5
+                    button = findViewById(R.id.button5)
+                }
+                2 -> {
+                    num = 6
+                    button = findViewById(R.id.button6)
+                }
+            }
+        }
+        if(renglon == 2) {
+            when (columna) {
+                0 -> {
+                    num = 7
+                    button = findViewById(R.id.button7)
+                }
+                1 -> {
+                    num = 8
+                    button = findViewById(R.id.button8)
+                }
+                2 -> {
+                    num = 9
+                    button = findViewById(R.id.button9)
+                }
+            }
+        }
+
+        var pair = Pair(num, button)
+        return pair
     }
 
     /*
     Completa el código:
 
     Completa la funcjón y realiza lo siguiente:
-    1. Ejecuta: ___TU JUGADORAUTOMATIC__.tablero.setTablero(p1, p2)
-    2. Obten el siguiente movimiento automático
+    1. Ejecuta: __TU JUGADORAUTOMATIC_.tablero.setTablero(p1, p2)
+    2. Obten el siguiente movimiento jugadorautomaticmático
     3. Ejecuta la función de nextFicha y obten el pair
     4. Manda el pair a gameOn como corresponde
 
      * */
 
     fun move(){
-
+        jugadorautomatic.tablero.setTablero(p1,p2)
+        var array = jugadorautomatic.calculaMovimiento()
+        var pair = nextFicha(array!![0], array[1])
+        gameOn(pair.first, pair.second)
     }
 }
