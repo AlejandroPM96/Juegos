@@ -318,4 +318,18 @@ fun main(ags: Array<String>){
     println( salida?.get(1))
 
 
-}
+}/*
+Explica la recursión del algoritmo.
+En cada llamada de recursion se intenta minimizar al contrario y maximizar a tu jugada entonces cada vez que se llama la recursion se va avanzando
+en el juego jugada por jugada
+¿Qué es el argumento de depth?
+depth es hasta donde o por asi decirlo hasta que jugada futura se va a calcular el minmax.
+¿Cómo se calcula ?
+EL depth se calcula por la cantidad de jugadas posibles, en este programa se pone 7 porque una vez que juega el contrincante una vez quedan solo 7 casillas
+mas posibles de juego entonecs estos son las opciones que debe revisar el programa para caluclar su siguiente movimiento
+
+
+
+
+
+        */
